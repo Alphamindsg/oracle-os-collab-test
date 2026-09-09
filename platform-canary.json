@@ -1,0 +1,47 @@
+{
+  "canary_id": "PLATFORM-CORE-003-CANARY-001",
+  "laboratory_only": true,
+  "source": {
+    "repo": "Alphamindsg/personal-finance-os",
+    "pr": 34,
+    "head_sha": "71db174ac5ee7d5de728a76764ef88553fdc576d",
+    "capability": "platform-core-003",
+    "version": "1.0.0"
+  },
+  "consumer": {
+    "repo": "Alphamindsg/oracle-os-collab-test",
+    "assurance_profile": "laboratory"
+  },
+  "dependency_edges": [
+    ["canary", "capability:platform-core-003"],
+    ["capability:platform-core-003", "source:pfo-pr34"]
+  ],
+  "shared_blockers": [
+    {
+      "id": "CANARY-BLOCKER-001",
+      "status": "closed",
+      "affected_repos": ["Alphamindsg/oracle-os-collab-test"],
+      "dispositions": {
+        "Alphamindsg/oracle-os-collab-test": "verified_not_affected"
+      },
+      "evidence": {
+        "repo": "Alphamindsg/personal-finance-os",
+        "head_sha": "71db174ac5ee7d5de728a76764ef88553fdc576d",
+        "run_id": 34388023918,
+        "result": "success"
+      }
+    }
+  ],
+  "defects": [
+    {
+      "id": "CANARY-DEFECT-001",
+      "material": true,
+      "reproducer": "tests.test_platform_canary.PlatformCanaryTests.test_closed_blocker_requires_disposition",
+      "root_cause": "canary negative fixture omits terminal repo disposition",
+      "regression_guard": "test_closed_blocker_requires_disposition",
+      "applicability": {
+        "Alphamindsg/oracle-os-collab-test": "applicable_and_guarded"
+      }
+    }
+  ]
+}

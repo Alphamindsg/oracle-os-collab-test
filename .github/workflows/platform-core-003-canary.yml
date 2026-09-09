@@ -1,0 +1,30 @@
+name: PLATFORM-CORE-003 Canary
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify-canary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - name: Verify exact-head checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+
+      - name: Run canary regression suite
+        run: python3 -m unittest -v tests/test_platform_canary.py
+
+      - name: Validate canary contract at exact head
+        run: python3 platform_canary.py platform-canary.json --exact-head "${{ github.event.pull_request.head.sha }}"
